@@ -75,7 +75,7 @@ legend.onAdd = function(map) {
     //     labels = [];
 
     var div = L.DomUtil.create('div', 'info legend');
-        labels = ['<strong>Categories</strong>'],
+        labels = ['<strong>Magnitude</strong>'],
         grades = [0,1,2,3,4,5];
 
     // loop through our density intervals and generate a label with a colored square for each interval
