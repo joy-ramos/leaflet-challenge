@@ -17,16 +17,6 @@ var geoData = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_wee
 
 console.log(typeof(geoData));
 
-// L.geoJSON(geoData).addTo(myMap);
-
-// var geojsonMarkerOptions = {
-//     radius: 8,
-//     fillColor: "#ff7800",
-//     color: "#000",
-//     weight: 1,
-//     opacity: 1,
-//     fillOpacity: 0.8
-// };
 var geojsonMarkerOptions = {
     radius: 8,
     fillColor: "#ff7800",
@@ -41,9 +31,6 @@ function onEachFeature(feature, layer) {
     // does this feature have a property named coordinates?
     
         // layer.bindPopup("ehhhhh").addTo(myMap);
-
-        
-    
 }
 
 var geoData = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
@@ -68,34 +55,43 @@ d3.json(geoData, function(data) {
                     weight: 1,
                     fillColor: getColor(feature.properties.mag),
                     // Adjust radius
-                    radius: feature.properties.mag * 6
+                    radius: (feature.properties.mag * 6)
 
                 }).bindPopup("<h1>"+ feature.properties.place +"</h1> <hr> <h3>Magnitude: " + feature.properties.mag + "</h3>").addTo(myMap);
             } 
         }
-    }).addTo(map);
+    }).addTo(myMap);
 
-    var legend = L.control({position: 'bottomright'});
-
-    legend.onAdd = function (map) {
-
-        var div = L.DomUtil.create('div', 'info legend'),
-            grades = [0,1,2,3,4,5],
-            labels = [];
-
-        // loop through our density intervals and generate a label with a colored square for each interval
-        for (var i = 0; i < grades.length; i++) {
-            div.innerHTML +=
-                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-        }
-
-        return div;
-    };
-
-    legend.addTo(map);
+    
 
 });
+
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function(map) {
+
+    // var div = L.DomUtil.create('div', 'info legend'),
+    //     grades = [0,1,2,3,4,5],
+    //     labels = [];
+
+    var div = L.DomUtil.create('div', 'info legend');
+        labels = ['<strong>Categories</strong>'],
+        grades = [0,1,2,3,4,5];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+
+        div.innerHTML += 
+        labels.push(
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '' : '+'));
+
+    }
+    div.innerHTML = labels.join('<br>');
+
+    return div;
+};
+legend.addTo(myMap);
 
 
 
